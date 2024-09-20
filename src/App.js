@@ -1,23 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import Navbar from './components/Navbar';
+import ProductList from './components/ProductList';
+import ProductDetails from './components/ProductDetails';
+import Cart from './components/Cart';
+import Login from './components/Login';
+import Register from './components/Register';
 
 function App() {
+  const [page, setPage] = useState('home');
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [cart, setCart] = useState([]);
+
+  const addToCart = (product) => {
+    setCart([...cart, product]);
+    alert('Product added to cart!');
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Navbar setPage={setPage} />
+      {page === 'home' && <ProductList setPage={setPage} setSelectedProduct={setSelectedProduct} />}
+      {page === 'product' && selectedProduct && <ProductDetails product={selectedProduct} addToCart={addToCart} />}
+      {page === 'cart' && <Cart cart={cart} />}
+      {page === 'login' && <Login />}
+      {page === 'register' && <Register />}
     </div>
   );
 }
